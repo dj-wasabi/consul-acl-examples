@@ -15,6 +15,8 @@ Each directory contains a `docker-compose.yml` that contains a basic configurati
 
 The cluster can be started by executing the `docker-compose.sh` script. Please make sure that if you start the 2nd cluster that the first cluster is down (Due to opening of ports).
 
+The `wdijkerman/consul` image is used for the Consul Cluster setup.
+
 ### single-dc
 
 This example starts 3 Docker Consul containers named `consul-1`, `consul-2` and `consul-3`.
