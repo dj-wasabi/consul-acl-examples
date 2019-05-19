@@ -1,0 +1,24 @@
+{
+	"data_dir": "/consul/data",
+	"log_level": "INFO",
+	"client_addr": "0.0.0.0",
+	"ui": true,
+	"server": true,
+    "bootstrap_expect": 3,
+	"disable_update_check": true,
+	"acl": {
+		"enabled": true,
+		"default_policy": "deny",
+		"down_policy": "extend-cache",
+		"enable_token_persistence": true,
+		"tokens": {
+			"agent": "7a59f860-7e6a-0037-52d6-270ee84e4bed",
+			"master": "9a6c723f-2533-2679-4515-654cdb7f96c9"
+		}
+	},
+	"retry_join": [
+		"consul-1",
+		"consul-2",
+		"consul-3"
+	]
+}

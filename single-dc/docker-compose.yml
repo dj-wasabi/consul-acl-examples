@@ -1,0 +1,44 @@
+---
+
+version: "2"
+
+services:
+  consul-1:
+    image: wdijkerman/consul
+    container_name: "consul-1"
+    hostname: "consul-1"
+    networks:
+      - single_dc
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    volumes:
+      - ./hcl:/tmp/hcl
+      - ./config/:/consul/config/
+  consul-2:
+    image: wdijkerman/consul
+    container_name: "consul-2"
+    hostname: "consul-2"
+    networks:
+      - single_dc
+    ports:
+      - "8501:8500"
+      - "8601:8600/udp"
+    volumes:
+      - ./hcl:/tmp/hcl
+      - ./config/:/consul/config/
+  consul-3:
+    image: wdijkerman/consul
+    container_name: "consul-3"
+    hostname: "consul-3"
+    networks:
+      - single_dc
+    ports:
+      - "8502:8500"
+      - "8602:8600/udp"
+    volumes:
+      - ./hcl:/tmp/hcl
+      - ./config/:/consul/config/
+
+networks:
+  single_dc:

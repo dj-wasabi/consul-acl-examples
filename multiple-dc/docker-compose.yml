@@ -1,0 +1,31 @@
+---
+
+version: "2"
+
+services:
+  consul-dc1:
+    image: wdijkerman/consul
+    container_name: "consul-dc1"
+    hostname: "consul-dc1"
+    networks:
+      - multiple_dc
+    ports:
+      - "8500:8500"
+    volumes:
+      - ./hcl:/tmp/hcl
+      - ./config/config-dc1.json:/consul/config/config.json
+  consul-dc2:
+    image: wdijkerman/consul
+    container_name: "consul-dc2"
+    hostname: "consul-dc2"
+    networks:
+      - multiple_dc
+    ports:
+      - "8501:8500"
+    volumes:
+      - ./hcl:/tmp/hcl
+      - ./config/config-dc2.json:/consul/config/config.json
+
+
+networks:
+  multiple_dc:

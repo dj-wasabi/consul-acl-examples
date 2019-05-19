@@ -1,0 +1,25 @@
+{
+	"data_dir": "/consul/data",
+	"log_level": "INFO",
+	"client_addr": "0.0.0.0",
+	"datacenter": "dc2",
+	"ui": true,
+	"server": true,
+    "bootstrap_expect": 1,
+	"disable_update_check": true,
+	"enable_acl_replication": true,
+	"primary_datacenter": "dc1",
+	"acl": {
+		"enabled": true,
+		"default_policy": "deny",
+		"down_policy": "extend-cache",
+		"enable_token_replication": true,
+		"enable_token_persistence": true,
+		"tokens": {
+			"agent": "FD8BCA99-ACE8-4FFE-BDF2-760A9CFAEAAB",
+			"master": "BDDF9C2E-7296-4D80-9CB5-661224D11FD6",
+			"replication": "FA294BBA-8279-4F93-84A2-FCBA61C8298A"
+		}
+	},
+	"retry_join_wan": ["consul-dc1"]
+}
