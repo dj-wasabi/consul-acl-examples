@@ -5,7 +5,7 @@
 	"datacenter": "dc1",
 	"ui": true,
 	"server": true,
-    "bootstrap_expect": 1,
+	"bootstrap_expect": 1,
 	"disable_update_check": true,
 	"enable_acl_replication": true,
 	"primary_datacenter": "dc1",
