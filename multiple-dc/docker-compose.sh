@@ -17,20 +17,20 @@ for DC in dc1 dc2;do
     CONSUL_HOST="consul-${DC}"
 
     echo "$(date +"%Y-%m-%d %H:%M:%S"): Configure Agent ACL ($DC)"
-    docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl policy create -name agent-token -rules @/tmp/hcl/agent.hcl >/dev/null
-    docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl token create -description "agent token" -policy-name agent-token -secret=${AGENT_TOKEN} >/dev/null
-    docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl set-agent-token agent "${AGENT_TOKEN}" >/dev/null
+    docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}"consul acl policy create -name agent-token -rules @/tmp/hcl/agent.hcl >/dev/null
+    docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl token create -description "agent token" -policy-name agent-token -secret="${AGENT_TOKEN}" >/dev/null
+    docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl set-agent-token agent "${AGENT_TOKEN}" >/dev/null
 
     if [[ "${DC}" == "dc1" ]]; then
         # Configure DNS
         echo "$(date +"%Y-%m-%d %H:%M:%S"): Configure DNS ACL ($DC)"
-        DNS_TOKEN=$(docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl policy create -name "dns-requests" -rules @/tmp/hcl/dns.hcl | grep 'ID:' | awk '{print $2}' | tr -d '\r')
-        docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl token create -description "Token for DNS Requests" -policy-name dns-requests >/dev/null
-        docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl set-agent-token default "${DNS_TOKEN}" >/dev/null
-        docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl policy create -name replication -rules @/tmp/hcl/replication.hcl >/dev/null
-        docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl token create -description "replication token" -policy-name replication -secret=${REPLICATION_TOKEN} >/dev/null
+        DNS_TOKEN=$(docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl policy create -name "dns-requests" -rules @/tmp/hcl/dns.hcl | grep 'ID:' | awk '{print $2}' | tr -d '\r')
+        docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl token create -description "Token for DNS Requests" -policy-name dns-requests >/dev/null
+        docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl set-agent-token default "${DNS_TOKEN}" >/dev/null
+        docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl policy create -name replication -rules @/tmp/hcl/replication.hcl >/dev/null
+        docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl token create -description "replication token" -policy-name replication -secret="${REPLICATION_TOKEN}" >/dev/null
     fi
-    docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl set-agent-token replication ${REPLICATION_TOKEN} >/dev/null
+    docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl set-agent-token replication "${REPLICATION_TOKEN}" >/dev/null
 done
 
 COUNTER=0

@@ -15,14 +15,14 @@ while [[ "${CONSUL_LEADER}" == "\"\"" ]];do
 done
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Configure Agent ACL"
-docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl policy create -name agent-token -rules @/tmp/hcl/agent.hcl >/dev/null
-docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl token create -description "agent token" -policy-name agent-token -secret=${AGENT_TOKEN} >/dev/null
-docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl set-agent-token agent "${AGENT_TOKEN}" >/dev/null
+docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl policy create -name agent-token -rules @/tmp/hcl/agent.hcl >/dev/null
+docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl token create -description "agent token" -policy-name agent-token -secret="${AGENT_TOKEN}" >/dev/null
+docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl set-agent-token agent "${AGENT_TOKEN}" >/dev/null
 
 # Configure DNS
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Configure DNS ACL"
 DNS_TOKEN=$(docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl policy create -name "dns-requests" -rules @/tmp/hcl/dns.hcl | grep 'ID:' | awk '{print $2}' | tr -d '\r')
-docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl token create -description "Token for DNS Requests" -policy-name dns-requests >/dev/null
-docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl set-agent-token default "${DNS_TOKEN}" >/dev/null
+docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl token create -description "Token for DNS Requests" -policy-name dns-requests >/dev/null
+docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl set-agent-token default "${DNS_TOKEN}" >/dev/null
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Consul Cluster configured completely"
