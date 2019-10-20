@@ -4,7 +4,7 @@
 	"client_addr": "0.0.0.0",
 	"ui": true,
 	"server": true,
-    "bootstrap_expect": 3,
+	"bootstrap_expect": 3,
 	"disable_update_check": true,
 	"acl": {
 		"enabled": true,
