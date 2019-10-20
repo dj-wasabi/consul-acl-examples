@@ -21,6 +21,7 @@ docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul a
 
 # Configure DNS
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Configure DNS ACL"
+# shellcheck disable=SC2086
 DNS_TOKEN=$(docker exec -e CONSUL_HTTP_TOKEN=${MASTER_TOKEN} -it ${CONSUL_HOST} consul acl policy create -name "dns-requests" -rules @/tmp/hcl/dns.hcl | grep 'ID:' | awk '{print $2}' | tr -d '\r')
 docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl token create -description "Token for DNS Requests" -policy-name dns-requests >/dev/null
 docker exec -e CONSUL_HTTP_TOKEN="${MASTER_TOKEN}" -it "${CONSUL_HOST}" consul acl set-agent-token default "${DNS_TOKEN}" >/dev/null
