@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Starting the basic Consul infrastructure"
-REPLICATION_TOKEN=$(cat config/config-dc2.json | python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["replication"])')
+REPLICATION_TOKEN=$(python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["replication"])' < config/config-dc2.json)
 docker-compose up -d >/dev/null 2>&1
 
 sleep 2
@@ -12,8 +12,8 @@ while [[ "${CONSUL_LEADER}" == "\"\"" ]];do
 done
 
 for DC in dc1 dc2;do
-    MASTER_TOKEN=$(cat config/config-${DC}.json | python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["master"])')
-    AGENT_TOKEN=$(cat config/config-${DC}.json | python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["agent"])')
+    MASTER_TOKEN=$(python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["master"])' < config/config-${DC}.json)
+    AGENT_TOKEN=$(python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["agent"])' < config/config-${DC}.json)
     CONSUL_HOST="consul-${DC}"
 
     echo "$(date +"%Y-%m-%d %H:%M:%S"): Configure Agent ACL ($DC)"

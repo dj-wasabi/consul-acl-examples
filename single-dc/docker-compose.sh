@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-MASTER_TOKEN=$(cat config/config.json | python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["master"])')
-AGENT_TOKEN=$(cat config/config.json | python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["agent"])')
+MASTER_TOKEN=$(python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["master"])' < config/config.json)
+AGENT_TOKEN=$(python -c 'import sys; import json; print (json.load(sys.stdin)["acl"]["tokens"]["agent"])' < config/config.json)
 CONSUL_HOST="consul-1"
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Starting the basic Consul infrastructure"
