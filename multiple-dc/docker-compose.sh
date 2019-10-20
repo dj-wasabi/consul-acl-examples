@@ -36,7 +36,7 @@ done
 COUNTER=0
 until docker logs consul-dc1 2>&1 | grep -- 'EventMemberUpdate: consul-dc2.dc2' >/dev/null || [ $COUNTER -eq 60 ]; do
     sleep 1
-    COUNTER=$(expr $COUNTER + 1)
+    COUNTER=$((COUNTER + 1))
 done
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"): Consul Cluster configured completely"
